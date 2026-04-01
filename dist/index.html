@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Performance Evaluation System</title>
+    <script type="module" crossorigin src="./assets/index-DKJ51UHH.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-X3oRx5vC.css">
+    <link rel="icon" type="image/svg+xml" crossorigin href="./images/main-logo.svg?v=2">
+    <link rel="shortcut icon" type="image/svg+xml" crossorigin href="./images/main-logo.svg?v=2">
+    <link rel="apple-touch-icon" href="./images/main-logo.svg?v=2">
+    <style>
+      :root {
+        /* Requested brand palette */
+        --primary: 21 89% 54%;
+        --ring: 21 89% 54%;
+        --accent: 228 54% 11%;
+        --sidebar-primary: 21 89% 54%;
+        --foreground: 228 54% 11%;
+        --sidebar-foreground: 228 54% 11%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        function replaceNavbarBrand() {
+          var navbarBrandText = Array.from(document.querySelectorAll("span")).find(function (el) {
+            return (el.textContent || "").trim() === "Evalua";
+          });
+
+          if (!navbarBrandText || !navbarBrandText.parentElement) {
+            return;
+          }
+
+          var brandWrap = navbarBrandText.parentElement;
+          if (brandWrap.getAttribute("data-brand-replaced") === "1") {
+            return;
+          }
+
+          brandWrap.innerHTML = "";
+
+          var mainLogo = document.createElement("img");
+          mainLogo.src = "./images/main-logo.svg";
+          mainLogo.alt = "";
+          mainLogo.setAttribute("aria-hidden", "true");
+          mainLogo.style.height = "55px";
+          mainLogo.style.width = "auto";
+          mainLogo.style.display = "block";
+
+          brandWrap.appendChild(mainLogo);
+          brandWrap.setAttribute("data-brand-replaced", "1");
+        }
+
+        // Initial try and continuous watch for React re-renders.
+        replaceNavbarBrand();
+        var observer = new MutationObserver(function () {
+          replaceNavbarBrand();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    </script>
+  </body>
+</html>
