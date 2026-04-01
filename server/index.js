@@ -15,8 +15,7 @@ const aiRoutes = require("./routes/ai.routes");
 
 const app = express();
 const PORT = Number(process.env.PORT || 5000);
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/employee-evaluation";
+const MONGODB_URI = process.env.MONGODB_URI;
 const CORS_ORIGIN = process.env.CORS_ORIGIN || "*";
 let isMongoConnected = false;
 
@@ -65,6 +64,10 @@ app.use((error, _req, res, _next) => {
 async function connectToDatabase() {
   if (isMongoConnected || mongoose.connection.readyState === 1) {
     return;
+  }
+
+  if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is not set");
   }
 
   await mongoose.connect(MONGODB_URI);
