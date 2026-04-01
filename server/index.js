@@ -17,8 +17,29 @@ const app = express();
 const PORT = Number(process.env.PORT || 5000);
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost:27017/employee-evaluation";
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "*";
+let isMongoConnected = false;
 
-app.use(cors());
+const corsOptions = {
+  origin(origin, callback) {
+    if (CORS_ORIGIN === "*") {
+      callback(null, true);
+      return;
+    }
+
+    const allowedOrigins = CORS_ORIGIN.split(",").map((value) => value.trim());
+
+    // Allow non-browser requests (no Origin header) like health checks.
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error("Not allowed by CORS"));
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/api/health", (_req, res) => {
@@ -41,11 +62,20 @@ app.use((error, _req, res, _next) => {
   res.status(500).json({ message: "Server error" });
 });
 
+async function connectToDatabase() {
+  if (isMongoConnected || mongoose.connection.readyState === 1) {
+    return;
+  }
+
+  await mongoose.connect(MONGODB_URI);
+  isMongoConnected = true;
+}
+
 async function start() {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await connectToDatabase();
     app.listen(PORT, () => {
-      console.log(`API server running on http://localhost:${PORT}`);
+      console.log(`API server running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Failed to start API server:", error.message);
@@ -53,4 +83,11 @@ async function start() {
   }
 }
 
-start();
+if (require.main === module) {
+  start();
+}
+
+module.exports = {
+  app,
+  connectToDatabase,
+};

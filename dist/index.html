@@ -4,11 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Performance Evaluation System</title>
+    <script>
+      // Use same-origin API when frontend and backend are on the same Vercel project.
+      window.__API_BASE_URL = "/api";
+    </script>
     <script type="module" crossorigin src="./assets/index-DKJ51UHH.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-X3oRx5vC.css">
-    <link rel="icon" type="image/svg+xml" crossorigin href="./images/main-logo.svg?v=2">
-    <link rel="shortcut icon" type="image/svg+xml" crossorigin href="./images/main-logo.svg?v=2">
-    <link rel="apple-touch-icon" href="./images/main-logo.svg?v=2">
+    <link rel="stylesheet" crossorigin href="./assets/index-X3oRx5vC.css" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      crossorigin
+      href="./images/main-logo.svg?v=2"
+    />
+    <link
+      rel="shortcut icon"
+      type="image/svg+xml"
+      crossorigin
+      href="./images/main-logo.svg?v=2"
+    />
+    <link rel="apple-touch-icon" href="./images/main-logo.svg?v=2" />
     <style>
       :root {
         /* Requested brand palette */
@@ -26,7 +40,9 @@
     <script>
       window.addEventListener("DOMContentLoaded", function () {
         function replaceNavbarBrand() {
-          var navbarBrandText = Array.from(document.querySelectorAll("span")).find(function (el) {
+          var navbarBrandText = Array.from(
+            document.querySelectorAll("span"),
+          ).find(function (el) {
             return (el.textContent || "").trim() === "Evalua";
           });
 
